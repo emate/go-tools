@@ -15,7 +15,9 @@ func usage() {
 
 func main() {
     flag.Usage = usage
+    show_dotfiles := flag.Bool("a", false, "Show dotfiles (default: Don't show)")
     flag.Parse()
+    
 
     args := flag.Args()
     if len(args) < 1 {
@@ -23,10 +25,13 @@ func main() {
         usage()
         os.Exit(1);
     }
-    var arg string = args[1];
+    var arg string = args[0];
     files, _ := ioutil.ReadDir(arg)
     for _, f:= range files {
-        fmt.Println(f.Name())
+        if string([]rune(f.Name())[0]) == "." && *show_dotfiles == false {
+        } else {
+          fmt.Println(f.Name())
+        }
     }
   
 }
